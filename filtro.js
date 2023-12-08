@@ -1,63 +1,57 @@
 // Tenemos un li de productos
+// Arreglo de objetos 
 
 const productos = [
-  {nombre: "Zapato negro", tipo: "zapato", color: "negro", img: "./taco-negro.jpg"},
-  {nombre: "Zapato azul", tipo: "zapato", color: "azul", img: "./taco-azul.jpg"},
-  {nombre: "Bota negra", tipo: "bota", color: "negro", img: "./bota-negra.jpg"},
-  {nombre: "Bota azul", tipo: "bota", color: "azul", img: "./bota-azul.jpg"},
-  {nombre: "Zapato rojo", tipo: "zapato", color: "rojo", img: "./zapato-rojo.jpg"}
+  { nombre: "Zapato negro", tipo: "zapato", color: "negro", img: "./taco-negro.jpg" },
+  { nombre: "Zapato azul", tipo: "zapato", color: "azul", img: "./taco-azul.jpg" },
+  { nombre: "Bota negra", tipo: "bota", color: "negro", img: "./bota-negra.jpg" },
+  { nombre: "Bota azul", tipo: "bota", color: "azul", img: "./bota-azul.jpg" },
+  { nombre: "Zapato rojo", tipo: "zapato", color: "rojo", img: "./zapato-rojo.jpg" }
 ]
 
-const li = document.getElementsByName("lista-de-productos")
-const $i = document.querySelector('.input');
+// Referencias de los elementos del Dom de los que se obtendrá el valor y donde se mostrarán productos
 
-for (let i = 0; i < productos.length; i++) {
-  var d = document.createElement("div")
-  d.classList.add("producto")
+const list = document.getElementById("lista-de-productos");
+const input = document.querySelector('.input');
 
-  var ti = document.createElement("p")
-  ti.classList.add("titulo")
-  ti.textContent = productos[i].nombre
-  
-  var imagen = document.createElement("img");
-  imagen.setAttribute('src', productos[i].img);
 
-  d.appendChild(ti)
-  d.appendChild(imagen)
+// Se define la función para mostrar los productos filtrados en el DOM
+const displayProductos = (productos) => {
 
-  li.appendChild(d)
+
+  //Se itera sobre el arreglo de productos filtrados para la inserción de elementos con sus respectivas clases ya definidas en el archivo CSS
+  for (let i = 0; i < productos.length; i++) {
+    var divEl = document.createElement("div");
+    divEl.classList.add("producto");
+
+    var title = document.createElement("p");
+    title.classList.add("titulo");
+    title.textContent = productos[i].nombre;
+
+    var imagen = document.createElement("img");
+    imagen.setAttribute('src', productos[i].img);
+
+    divEl.appendChild(title);
+    divEl.appendChild(imagen);
+
+    list.appendChild(divEl);
+  }
 }
 
-displayProductos(productos)
 const botonDeFiltro = document.querySelector("button");
 
-botonDeFiltro.onclick = function() {
-  while (li.firstChild) {
-    li.removeChild(li.firstChild);
+// Se proporciona una referencia a lafunción
+botonDeFiltro.onclick = function filtrar() {
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
   }
 
-  const texto = $i.value;
+  const texto = input.value;
   console.log(texto);
-  const productosFiltrados = filtrado(productos, texto );
-
-  for (let i = 0; i < productosFiltrados.length; i++) {
-    var d = document.createElement("div")
-    d.classList.add("producto")
-  
-    var ti = document.createElement("p")
-    ti.classList.add("titulo")
-    ti.textContent = productosFiltrados[i].nombre
-    
-    var imagen = document.createElement("img");
-    imagen.setAttribute('src', productosFiltrados[i].img);
-  
-    d.appendChild(ti)
-    d.appendChild(imagen)
-  
-    li.appendChild(d)
-  }
+  const productosFiltrados = filtrado(productos, texto);
+  displayProductos(productosFiltrados);
 }
 
-const filtrado = (productos = [], texto) => {
+const filtrado = (productos, texto) => {
   return productos.filter(item => item.tipo.includes(texto) || item.color.includes(texto));
 }  
